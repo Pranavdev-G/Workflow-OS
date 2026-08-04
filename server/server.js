@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const http = require('http');
-const socketio = require('socket.io');
+const { Server } = require('socket.io'); // FIXED: Destructure Server from socket.io
 const connectDB = require('./config/db');
 const socketHandler = require('./sockets/socketHandler');
 
@@ -12,7 +12,9 @@ connectDB();
 
 const app = require('./app');
 const server = http.createServer(app);
-const io = socketio(server, {
+
+// FIXED: Initialize Socket.IO using 'new Server()'
+const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
     methods: ['GET', 'POST']

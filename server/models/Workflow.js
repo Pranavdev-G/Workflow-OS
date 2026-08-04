@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const workflowTemplateSchema = new mongoose.Schema({
+const workflowSchema = new mongoose.Schema({
   name: { type: String, required: true },
   type: { 
     type: String, 
@@ -17,4 +17,4 @@ const workflowTemplateSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('WorkflowTemplate', workflowTemplateSchema);
+module.exports = mongoose.model('Workflow', workflowSchema);
