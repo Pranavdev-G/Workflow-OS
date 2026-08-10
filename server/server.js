@@ -1,11 +1,12 @@
 const dotenv = require('dotenv');
+const path = require('path');
 const http = require('http');
 const { Server } = require('socket.io'); // FIXED: Destructure Server from socket.io
 const connectDB = require('./config/db');
 const socketHandler = require('./sockets/socketHandler');
 
 // Load env vars
-dotenv.config({ path: './.env' });
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Connect to Database
 connectDB();
