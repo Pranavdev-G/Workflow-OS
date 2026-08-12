@@ -34,6 +34,7 @@ const Sidebar = ({ isOpen }) => {
           <>
             <Link to="/admin/users" className={linkClass('/admin/users')}>User Management</Link>
             <Link to="/admin/departments" className={linkClass('/admin/departments')}>Departments</Link>
+            <Link to="/admin/workflow-templates" className={linkClass('/admin/workflow-templates')}>Workflow Templates</Link>
             <Link to="/admin/workflows" className={linkClass('/admin/workflows')}>Workflows</Link>
             <Link to="/admin/reports" className={linkClass('/admin/reports')}>Reports</Link>
           </>

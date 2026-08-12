@@ -8,10 +8,10 @@ const { summarizeRequest } = require('../services/aiService');
 
 exports.createRequest = asyncHandler(async (req, res, next) => {
   req.body.user = req.user.id;
-  const workflow = await Workflow.findById(req.body.workflow).populate('template');
+  const workflow = await Workflow.findById(req.body.workflow);
   if (!workflow) return next(new ErrorResponse('Workflow not found', 404));
 
-  req.body.type = workflow.template.type;
+  req.body.type = workflow.type;
   
   // Simulate AI summary generation during creation
   req.body.description = await summarizeRequest(req.body.title, req.body.description);
@@ -67,7 +67,7 @@ exports.getRequest = asyncHandler(async (req, res, next) => {
 });
 
 exports.approveRequest = asyncHandler(async (req, res, next) => {
-  const request = await Request.findById(req.params.id);
+  const request = await Request.findById(req.params.id).populate('workflow');
   if (!request) return next(new ErrorResponse('Request not found', 404));
 
   request.history.push({
@@ -79,10 +79,9 @@ exports.approveRequest = asyncHandler(async (req, res, next) => {
 
   request.currentStep += 1;
   
-  // Simple logic: if step > 2, consider it completed for this college project context
-  if (request.currentStep > 2) {
+  const totalSteps = request.workflow && request.workflow.steps ? request.workflow.steps.length : 1;
+  if (request.currentStep > totalSteps) {
     request.status = 'approved';
-    request.isCompleted = true;
   }
 
   await request.save();

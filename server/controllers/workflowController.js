@@ -34,12 +34,40 @@ exports.getWorkflows = asyncHandler(async (req, res, next) => {
 });
 
 exports.createWorkflow = asyncHandler(async (req, res, next) => {
-  const workflow = await Workflow.create(req.body);
+  const { name, description, template } = req.body;
+  
+  const templateDoc = await WorkflowTemplate.findById(template);
+  if (!templateDoc) {
+    return next(new ErrorResponse('Template not found', 404));
+  }
+
+  const workflow = await Workflow.create({
+    name,
+    description,
+    template,
+    type: templateDoc.type,
+    steps: templateDoc.steps
+  });
+  
   res.status(201).json({ success: true, data: workflow });
 });
 
 exports.updateWorkflow = asyncHandler(async (req, res, next) => {
-  const workflow = await Workflow.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+  const { name, description, template } = req.body;
+  
+  const updateData = { name, description };
+  
+  if (template) {
+    const templateDoc = await WorkflowTemplate.findById(template);
+    if (!templateDoc) {
+      return next(new ErrorResponse('Template not found', 404));
+    }
+    updateData.template = template;
+    updateData.type = templateDoc.type;
+    updateData.steps = templateDoc.steps;
+  }
+
+  const workflow = await Workflow.findByIdAndUpdate(req.params.id, updateData, { new: true, runValidators: true });
   if (!workflow) return next(new ErrorResponse('Workflow not found', 404));
   res.status(200).json({ success: true, data: workflow });
 });
