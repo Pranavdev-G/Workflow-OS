@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const workflowSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  template: { type: mongoose.Schema.Types.ObjectId, ref: 'WorkflowTemplate', required: true },
   type: { 
     type: String, 
     enum: ['Leave Request', 'Purchase Request', 'Travel Request', 'Reimbursement Request', 'Document Approval', 'General Approval'],

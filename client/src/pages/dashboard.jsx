@@ -5,6 +5,9 @@ import { Bar, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, ArcElement, Tooltip, Legend);
+import AdminDashboard from './AdminDashboard';
+import EmployeeDashboard from './EmployeeDashboard';
+import ManagerDashboard from './ManagerDashboard';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -104,6 +107,12 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="mt-4">
+        {user?.role === 'admin' && <AdminDashboard />}
+        {user?.role === 'manager' && <ManagerDashboard />}
+        {user?.role === 'employee' && <EmployeeDashboard />}
       </div>
     </div>
   );

@@ -8,6 +8,17 @@ import MainLayout from './layouts/MainLayout';
 import Login from './pages/login';
 import Register from './pages/register';
 import Dashboard from './pages/dashboard';
+import RequestSubmission from './pages/RequestSubmission';
+import MyRequests from './pages/MyRequests';
+import PendingApprovals from './pages/PendingApprovals';
+import UserManagement from './pages/UserManagement';
+import DepartmentManagement from './pages/DepartmentManagement';
+import WorkflowManagement from './pages/WorkflowManagement';
+import WorkflowTemplates from './pages/WorkflowTemplates';
+import Reports from './pages/Reports';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Notifications from './pages/Notification';
 
 const AppRoutes = () => {
   const { isAuthenticated, loading } = useAuth();
@@ -22,7 +33,28 @@ const AppRoutes = () => {
       <Route element={<ProtectedRoute />}>
         <Route element={<NotificationProvider><MainLayout /></NotificationProvider>}>
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* Additional routes will be added in Batch 3 */}
+          
+          {/* Employee & general routes */}
+          <Route path="/submit-request" element={<RequestSubmission />} />
+          <Route path="/my-requests" element={<MyRequests />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/notifications" element={<Notifications />} />
+
+          {/* Manager & Admin Routes */}
+          <Route element={<ProtectedRoute roles={['manager', 'admin']} />}>
+            <Route path="/pending-approvals" element={<PendingApprovals />} />
+          </Route>
+
+          {/* Admin Specific Routes */}
+          <Route element={<ProtectedRoute roles={['admin']} />}>
+            <Route path="/admin/users" element={<UserManagement />} />
+            <Route path="/admin/departments" element={<DepartmentManagement />} />
+            <Route path="/admin/workflows" element={<WorkflowManagement />} />
+            <Route path="/admin/workflow-templates" element={<WorkflowTemplates />} />
+            <Route path="/admin/reports" element={<Reports />} />
+          </Route>
+          
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Route>
       </Route>
