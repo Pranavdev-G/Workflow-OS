@@ -1,11 +1,12 @@
+const path = require('path');
 const dotenv = require('dotenv');
 const http = require('http');
 const { Server } = require('socket.io'); // FIXED: Destructure Server from socket.io
 const connectDB = require('./config/db');
 const socketHandler = require('./sockets/socketHandler');
 
-// Load env vars
-dotenv.config({ path: './.env' });
+// Load env vars - use __dirname so the path resolves correctly regardless of CWD
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Connect to Database
 connectDB();
