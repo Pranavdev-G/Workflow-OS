@@ -1,3 +1,4 @@
+const path = require('path');
 const dotenv = require('dotenv');
 const path = require('path');
 const http = require('http');
@@ -6,7 +7,7 @@ const connectDB = require('./config/db');
 const socketHandler = require('./sockets/socketHandler');
 
 // Load env vars
-dotenv.config({ path: path.join(__dirname, '.env') });
+dotenv.config({ path: './.env' });
 
 // Connect to Database
 connectDB();
